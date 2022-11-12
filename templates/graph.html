@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Graph</title>
+	<style>
+		html, * {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+			position: relative;
+			overflow: hidden;
+		}
+
+		body {
+			min-height: 100vh;
+		}
+		.grid {
+			max-width: 600px;
+			position: relative;
+			padding: 10px;
+			height: 500px;
+			margin: 10px auto;
+			outline: 2px solid lightblue;
+			overflow-y: scroll;
+		}
+
+		p:nth-child(1) {
+			padding: 20px;
+			text-align: center;
+			font-family: ubuntu;
+			font-weight: bolder;
+			font-size: 40px;
+			color: lightskyblue;
+		}
+
+		.algo {
+			display: block;
+			padding: 10px;
+			background: #3c3131;
+			margin: 10px;
+			box-shadow: -5px 10px 5px rgba(0, 0, 0, .2);
+		}
+
+		.algo__link {
+			text-decoration: none;
+			color: lightskyblue;
+			font-size: 20px;
+			font-weight: bolder;
+			text-shadow: 10px 10px 10px rgba(0, 0, 0, .3);
+		}
+
+	</style>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<p class='heading'>Graph</p>
+	<div class='grid'></div>
+
+	</div>
+
+	<div class="circular__read">
+		
+	</div>
+	<script>
+
+// Main
+		let grid = document.querySelector('.grid');
+		let algo = [
+			{
+				name: 'BFS, DFS',
+				link: `graphs/graph.html`
+			},
+			{
+				name: 'Djstras Algorithm',
+				link: `graphs/dijstras.html`
+			},
+			{
+				name: 'Flood Fill',
+				link: `graphs/flood_fill.html`
+			},
+			{
+				name: 'Color filling',
+				link: `graphs/color_filling.html`
+			},
+			{
+				name: 'DFS Maze',
+				link: 'graphs/create_dfs_maze.html'
+			},
+			
+			{
+				name: 'Detect Cycle (DFS, BFS)',
+				link: `graphs/detect_cycle.html`
+			},
+			{
+				name: 'Kruskals MSP Algorithm',
+				link: `graphs/kruskals.html`
+			},
+			{
+				name: 'Travelling Salesman',
+				link: `graphs/travelling_salesman.html`
+			},
+			{
+				name: 'Topological sorting',
+				link: `graphs/topological.html`
+			},
+			// {
+			// 	name: 'Snake And Ladder',
+			// 	link: `graphs/snake_and_ladder.html`
+			// },
+			// {
+			// 	name: 'Prims Algorithm',
+			// 	link: `graphs/prims.html`
+			// },
+			// {
+			// 	name: 'Bellman Ford',
+			// 	link: `graphs/bellman_ford.html`
+			// },
+			// {
+			// 	name: 'Floyd Warshall',
+			// 	link: `graphs/floyd_warshall.html`
+			// },
+			// {
+			// 	name: 'Ford Fulkerson',
+			// 	link: `graphs/ford_fulkerson.html`
+			// },
+			// {
+			// 	name: 'Tarjons Algorithm',
+			// 	link: `graphs/tarjons.html`
+			// },
+			{
+				name: "Finding Bridges",
+				link: `graphs/bridges.html`
+			},
+			// {
+			// 	name: 'Kosarajus',
+			// 	link: `graphs/kosarajus.html`
+			// },
+			// {
+			// 	name: 'Articulation Points',
+			// 	link: `graphs/articulation.html`
+			// },
+			// {
+			// 	name: 'Dinic\'s Algorithm',
+			// 	link: `graphs/dinics.html`
+			// },
+		]
+		init();
+
+
+// Utility function 
+
+		function init() {
+			algo.forEach((e, i) => {
+				let html = `
+						<a href="${e.link}" class="algo__link">${e.name}</a>
+				`
+				let algo = document.createElement('div');
+				algo.classList.add('algo');
+				algo.innerHTML = html;
+				grid.appendChild(algo);
+			})
+		}
+	</script>
+</body>
+</html>

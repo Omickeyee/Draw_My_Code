@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sorted Matrix Search</title>
+	<style>
+		html, * {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			text-align: center;
+		}
+
+		.grid {
+			background: lightskyblue;
+			margin: auto;
+			border: 2px solid black;
+		}
+
+		p:nth-child(1) {
+			padding: 10px 20px;
+			text-align: center;
+			font-family: ubuntu;
+			font-weight: bolder;
+			font-size: 25px;
+			text-transform: uppercase;
+			color: lightskyblue;
+		}
+
+		.opt > button {
+			padding: 10px 30px;
+		}
+		.opt > input {
+			width: 100px;
+			padding: 10px 0px 10px 50px;
+		}
+
+	</style>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<p>Sorted Matrix Search</p>
+	<canvas class='grid' width="1000" height="500">
+		
+	</canvas>
+	<div class="opt">
+		<input type="number" class="value" value=0>
+		<button class="find">
+			Find Key
+		</button>
+	</div>
+	<script>
+
+// Main
+	let time_delay = 500;
+	let ctx = document.querySelector("canvas").getContext("2d");
+	let size = 10;
+	let arr = [];
+	pw = ctx.canvas.width / size;
+	ph = ctx.canvas.height / size;
+	init();
+// Utility
+	
+	function init() {
+		init_array();
+		draw_array();
+		add_listeners();
+	}
+
+	function init_array() {
+		for(let i=0; i<size; i++) {
+			let temp = [];
+			let min = i * 20;
+			let max = (i + 1) * 20;
+			for(let j=0; j<size; j++) {
+				let val = Math.floor(Math.random() * (max - min) + min);
+				temp.push(val);
+			}
+			temp.sort((a, b) => a-b);
+			arr.push(temp);
+		}
+	}
+	async function draw_array(x1=0, x2=size - 1, y1=0, y2=size - 1, bc="black", c="white") {
+		gap = 0;
+		for(let  i=x1; i<=x2; i++) {
+			for(let j=y1; j<=y2; j++) {
+				ctx.fillStyle = bc;
+				ctx.fillRect(gap + j * pw, i * ph, pw, ph);
+				ctx.strokeStyle = c;
+				ctx.strokeRect(gap + j * pw, i * ph, pw, ph);
+				ctx.fillStyle = c;
+				ctx.font = "bolder 17px arial";
+				ctx.fillText(arr[i][j], gap + j * pw + pw / 2, i * ph + ph / 2)
+			}
+		}
+	}
+
+	function add_listeners() {
+		document.querySelector(".find").addEventListener("click", () => {
+			let value = +document.querySelector(".value").value;
+			document.querySelector(".find").disabled = true;
+			binarySeach(value);
+		})
+	}	
+
+	async function binarySeach(value) {
+		let i = 0;
+		let j = size - 1;
+
+		while(i >= 0 && j >= 0 && i <size && j<size) {
+			gap = 0;
+			c = "lightskyblue";
+			bc = "yellow";
+			if(arr[i][j] != value) {
+				await sleep(time_delay).then(() => {
+					ctx.fillStyle = bc;
+					ctx.fillRect(gap + j * pw, i * ph, pw, ph);
+					ctx.strokeStyle = "white";
+					ctx.strokeRect(gap + j * pw, i * ph, pw, ph);
+					ctx.fillStyle = c;
+					ctx.font = "bolder 25px arial";
+					ctx.fillText(arr[i][j], gap + j * pw + pw / 2, i * ph + ph / 2)
+				})
+			}
+			if(arr[i][j] == value) {
+				await sleep(time_delay).then(() => {
+					bc = "white";
+					c = "black";
+					ctx.fillStyle = bc;
+					ctx.fillRect(gap + j * pw, i * ph, pw, ph);
+					ctx.strokeStyle = "white";
+					ctx.strokeRect(gap + j * pw, i * ph, pw, ph);
+					ctx.fillStyle = c;
+					ctx.font = "bolder 25px arial";
+					ctx.fillText(arr[i][j], gap + j * pw + pw / 2, i * ph + ph / 2)
+				})
+				await sleep(time_delay).then(() => {
+					alert(`found the element at ${i}, ${j}`);
+				})
+				return;
+			}
+			else if(value > arr[i][j]) {
+				i++;
+			}
+			else {
+				j--;
+			}
+		}
+		await sleep(time_delay).then(() => {
+			alert("Element Not Present");
+		})
+				
+	}
+
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
+	</script>
+</body>
+</html>

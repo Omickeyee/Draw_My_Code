@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dynamic Programming</title>
+	<style>
+		html, * {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+			position: relative;
+			overflow: hidden;
+		}
+
+		body {
+			min-height: 100vh;
+		}
+		.grid {
+			max-width: 600px;
+			position: relative;
+			padding: 10px;
+			margin: 50px auto;
+			outline: 2px solid green;
+			overflow-y: scroll;
+			height: 500px;
+		}
+
+		p:nth-child(1) {
+			padding: 20px;
+			text-align: center;
+			font-family: ubuntu;
+			font-weight: bolder;
+			font-size: 20px;
+		}
+
+		.algo {
+			display: block;
+			padding: 10px;
+			background: lightgreen;
+			margin: 10px;
+			box-shadow: -5px 10px 5px rgba(0, 0, 0, .2);
+		}
+
+		.algo__link {
+			text-decoration: none;
+			color: purple;
+			font-size: 20px;
+			font-weight: bolder;
+			text-shadow: 10px 10px 10px rgba(0, 0, 0, .3);
+		}
+
+	</style>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<p class='heading'>Dynamic Programming</p>
+	<div class='grid'></div>
+
+	</div>
+
+	<div class="circular__read">
+		
+	</div>
+	<script>
+
+// Main
+		let grid = document.querySelector('.grid');
+		let algo = [
+			{
+				name: 'Ladders Problem',
+				link: `dynamic/ladder.html`
+			},
+			{
+				name: '0/1 Knapsack',
+				link: `dynamic/0_1_knapsack.html`
+			},
+			{
+				name: 'unbounded 0/1 Knapsack',
+				link: `dynamic/unbounded_0_1_knapsack.html`
+			},
+			{
+				name: 'Subset Sum problem',
+				link: `dynamic/subset_sum.html`
+			},
+			{
+				name: 'Cutting Rod problem',
+				link: `dynamic/cutting_rod.html`
+			},
+			{
+				name: 'Coin change-making problem',
+				link: `dynamic/coin_change_making.html`
+			},
+			{
+				name: 'Longest Common Subsequence Problem',
+				link: `dynamic/longest_common_sequence.html`
+			},
+			{
+				name: 'Levenshtein Distance Problem',
+				link: `dynamic/levenshtein.html`
+			},
+			// {
+			// 	name: 'Matrix Chain Multipication',
+			// 	link: `dynamic/matrix_chain_multipication.html`
+			// },
+			{
+				name: 'Travelling salesman',
+				link: `dynamic/travelling_salesman.html`
+			}
+		]
+		init();
+
+// Utility function 
+
+		function init() {
+			algo.forEach((e, i) => {
+				let html = `
+						<a href="${e.link}" class="algo__link">${e.name}</a>
+				`
+				let algo = document.createElement('div');
+				algo.classList.add('algo');
+				algo.innerHTML = html;
+				grid.appendChild(algo);
+			})
+		}
+	</script>
+</body>
+</html>

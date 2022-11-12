@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sort</title>
+	<style>
+		html, * {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+			position: relative;
+			overflow: hidden;
+		}
+
+		body {
+			min-height: 100vh;
+		}
+
+		.grid {
+			max-width: 600px;
+			position: relative;
+			padding: 10px;
+			height: 450px;
+			margin: 10px auto;
+			outline: 2px solid green;
+			overflow-y: scroll;
+		}
+
+		p:nth-child(1) {
+			padding: 20px;
+			text-align: center;
+			font-family: ubuntu;
+			font-weight: bolder;
+			font-size: 40px;
+			color: lightskyblue;
+		}
+
+		.algo {
+			display: block;
+			padding: 10px;
+			background: #3c3131;
+			margin: 10px;
+			box-shadow: -5px 10px 5px rgba(0, 0, 0, .2);
+		}
+
+		.algo__link {
+			text-decoration: none;
+			color: lightskyblue;
+			font-size: 20px;
+			font-weight: bolder;
+			text-shadow: 10px 10px 10px rgba(0, 0, 0, .3);
+		}
+
+		.visualise {
+			text-align: center;
+		}
+
+		.visualise__array {
+			padding: 10px;
+			margin: auto;
+			background: black;
+			color: lightskyblue;
+		}
+		.visualise__array > option {
+			padding: 10px;
+		}
+	</style>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<p class='heading'>Sorting Algorithm</p>
+	<div class="visualise">
+		<select name="type" class="visualise__array">
+			<option value="sort_algorithms">Visualize</option>
+			<option value="sort_array">Use Array</option>
+		</select>
+	</div>
+	<div class='grid'></div>
+
+	</div>
+
+	<div class="circular__read">
+		
+	</div>
+	<script>
+
+// Main
+		let grid = document.querySelector('.grid');
+		let dir_name = "sort_algorithms"
+
+		let algo = [
+			{
+				name: 'Bubble sort',
+				link: `bubble.html`
+			},
+			{
+				name: 'Selection sort',
+				link: `selection.html`
+			},
+			{
+				name: 'Insertion sort',
+				link: `insertion.html`
+			},
+			{
+				name: 'Merge sort',
+				link: `merge.html`
+			},
+			{
+				name: 'Quick sort',
+				link: `quick.html`
+			},
+			{
+				name: 'Counting sort',
+				link: `counting.html`
+			},
+			{
+				name: 'Heap sort',
+				link: `heap.html`
+			},
+			{
+				name: 'Shell sort',
+				link: `shell.html`
+			},
+		]
+		init();
+
+// Utility function 
+
+		function create_link() {
+			algo.forEach((e, i) => {
+				let html = `
+						<a href="${dir_name}/${e.link}" class="algo__link">${e.name}</a>
+				`
+				let algo = document.createElement('div');
+				algo.classList.add('algo');
+				algo.innerHTML = html;
+				grid.appendChild(algo);
+			})
+		}
+
+		function init() {
+			if(localStorage.getItem("dirname")) {
+				dir_name = localStorage.getItem("dirname");
+				document.querySelector(".visualise__array").value = dir_name;
+				console.log(dir_name)
+				
+			}
+			create_link();
+			document.querySelector(".visualise__array").addEventListener("click",(e) => {
+				let p = document.querySelector(".visualise__array").value;
+				dir_name = p;
+				localStorage.setItem("dirname", p);
+				document.querySelector(".grid").innerHTML = "";
+				create_link();
+			})
+		}
+	</script>
+</body>
+</html>
+

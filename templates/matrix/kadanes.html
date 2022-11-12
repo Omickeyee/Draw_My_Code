@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kadanes 2D</title>
+	<style>
+		html, * {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			text-align: center;
+		}
+
+		.grid {
+			background: #e6f0ff;
+			margin: auto;
+		}
+
+		p:nth-child(1) {
+			padding: 10px 20px;
+			text-align: center;
+			font-family: ubuntu;
+			font-weight: bolder;
+			font-size: 25px;
+			text-transform: uppercase;
+			color: lightskyblue;
+		}
+
+		.visualise {
+			padding: 10px 20px;
+		}
+
+	</style>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<p>Kadanes 2D</p>
+	<canvas class='grid' width="1100" height="550">
+		
+	</canvas>
+	<div>
+		<button class="visualise">Visualise</button>
+	</div>
+	<script>
+
+// Main
+	let ctx = document.querySelector("canvas").getContext("2d");
+	let size = 10;
+	let right = 450;
+	let bottom = 0;
+	let pw = (ctx.canvas.width - right) / size;
+	let ph = (ctx.canvas.height - bottom )/ size;
+	let arr = [];
+	let params = [0, 0, 0, 0, 0, 0]
+	let time_delay = 1000;
+	init();
+// Utility
+	async function init() {
+		init_array();
+		add_listeners();
+		await animate_array(0, 0);
+		await add_listeners();
+	}
+
+	async function twoDKadanes() {
+		for(let i=0; i<size; i++) {
+			kad = []
+			for(let k = 0; k<size; k++) {
+				kad.push(arr[k][i]);
+			}
+
+
+			//["currentSum", "maxSum", "maxLeft", "maxRight", "maxUp", "maxBottom"];
+			//        0         1        2            3           4       5
+
+			// params[0] = i;
+			for(let j=i; j<size; j++) {
+				// params[1] = j;
+				if(i == j) {
+					await sleep(time_delay).then(() => {
+						animate_array(i, j);
+						sum_array(kad);
+						kadane_array(getKadane(kad, i, j));
+						parameters();
+					})
+				}
+				else {
+					for(let k = 0; k<size; k++) {
+						kad[k] += arr[k][j];
+					
+					}
+					await sleep(time_delay).then(() => {
+						animate_array(i, j);
+						sum_array(kad);
+						kadane_array(getKadane(kad, i, j));
+						parameters();
+					})
+				}
+			}
+		}
+	}
+
+	function init_array() {
+		for(let i=0; i<size; i++) {
+			temp = [];
+			for(let j=0; j<size; j++) {
+				let max = 10;
+				let min = -10;
+				let val = Math.floor(Math.random() * (max + 1 - min) + min);
+				temp.push(val);
+			}
+			arr.push(temp);
+		}
+	}
+
+	async function add_listeners() {
+		document.querySelector(".visualise").addEventListener("click", () => {
+				document.querySelector(".visualise").disabled = true;
+				async function get() {
+					await twoDKadanes();
+					await final_animate_array(params[2], params[3], params[4], params[5] );
+				}
+				get();
+		})
+
+	}
+
+	function getKadane(arr, ii, jj) {
+		let kad = []
+
+			//["currentSum", "maxSum", "maxLeft", "maxRight", "maxUp", "maxBottom"];
+			//        0         1        2            3           4       5
+
+		for(let i =0; i<size; i++) {
+			if(i == 0) kad[i] = arr[i];
+			else {
+				kad[i] = kad[i] > arr[i] + kad[i - 1] ? kad[i] : arr[i] + kad[i - 1];
+			}
+		}
+		let pos = 0;
+		for(let i =1; i<size; i++) {
+			if(kad[i] > kad[pos]) {
+				pos = i;
+			}
+ 		}
+
+ 		params[0] = kad[pos];
+ 		
+
+ 		if(params[0] > params[1]) {
+ 			params[1] = params[0];
+ 			params[5] = pos;
+ 			while(pos >= 0) {
+	 			if(arr[pos] == kad[pos]) {
+					params[4] = pos;
+	 				break;
+	 			}
+	 			pos--;
+	 		}
+	 		params[2] = ii;
+	 		params[3] = jj;
+ 		}
+ 		
+		return kad;
+	}
+
+	function animate_array(l, r) {
+		for(let i=0; i<size; i++) {
+			for(let j=0; j<size; j++) {
+				ctx.fillStyle = "black";
+				if(j >= l && j <= r) ctx.fillStyle = "gray";
+				ctx.fillRect(j * pw, i * ph, pw, ph);
+				ctx.strokeStyle = "white";
+				ctx.strokeRect(j * pw, i * ph, pw, ph);
+				ctx.fillStyle = "white";
+				ctx.font = "bolder 17px arial";
+				ctx.fillText(arr[i][j], j * pw + pw / 2, i * ph + ph / 2)
+			}
+		}
+	}
+
+	function final_animate_array(l, r, u, d) {
+		for(let i=0; i<size; i++) {
+			for(let j=0; j<size; j++) {
+				ctx.fillStyle = "black";
+				if(j >= l && j <= r && i>=u && i<=d) ctx.fillStyle = "red";
+				ctx.fillRect(j * pw, i * ph, pw, ph);
+				ctx.strokeStyle = "white";
+				ctx.strokeRect(j * pw, i * ph, pw, ph);
+				ctx.fillStyle = "white";
+				ctx.font = "bolder 17px arial";
+				ctx.fillText(arr[i][j], j * pw + pw / 2, i * ph + ph / 2)
+			}
+		}
+	}
+
+	function kadane_array(arr) {
+		let j = size;
+		let gap = 120;
+		for(let i=0; i<size; i++) {
+			ctx.fillStyle = "yellow";
+			ctx.fillRect(gap + j * pw, i * ph, pw, ph);
+			ctx.strokeStyle = "black";
+			ctx.strokeRect(gap + j * pw, i * ph, pw, ph);
+			ctx.fillStyle = "red";
+			ctx.font = "bolder 17px arial";
+			ctx.fillText(arr[i], gap + j * pw + pw / 2, i * ph + ph / 2)
+		}
+	}
+
+	function sum_array(arr) {
+		let j = size;
+		let gap = 20;
+		for(let i=0; i<size; i++) {
+			ctx.fillStyle = "silver";
+			ctx.fillRect(gap + j * pw, i * ph, pw, ph);
+			ctx.strokeStyle = "black";
+			ctx.strokeRect(gap + j * pw, i * ph, pw, ph);
+			ctx.fillStyle = "red";
+			ctx.font = "bolder 17px arial";
+			ctx.fillText(arr[i], gap + j * pw + pw / 2, i * ph + ph / 2)
+		}
+	}
+
+	function parameters() {
+		let j = size + 1;
+		let gap = 148;
+		let s = ["currentSum", "maxSum", "maxLeft", "maxRight", "maxUp", "maxBottom"];
+		param = s.length;
+		for(let i=0; i<param; i++) {
+			ctx.fillStyle = "black";
+			ctx.fillRect(gap + j * pw, i * ph + 100, 2 * pw, ph);
+			ctx.strokeStyle = "white";
+			ctx.strokeRect(gap + j * pw, i * ph + 100, 2 * pw, ph);
+			ctx.fillStyle = "white";
+			ctx.font = "bolder 17px arial";
+			ctx.fillText(s[i], gap + j * pw + pw / 2, i * ph + ph / 2 + 100)
+		}
+
+		gap = 50;
+		j = size + 1;
+		let space = 100 + 2 * pw;
+		for(let i=0; i<param; i++) {
+			ctx.fillStyle = "white";
+			ctx.fillRect(gap + j * pw + space, i * ph + 100, pw, ph);
+			ctx.strokeStyle = "black";
+			ctx.strokeRect(gap + j * pw + space, i * ph + 100, pw, ph);
+			ctx.fillStyle = "black";
+			ctx.font = "bolder 17px arial";
+			ctx.fillText(params[i], gap + j * pw + pw / 2 + space, i * ph + ph / 2 + 100)
+		}
+	}
+
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
+	</script>
+</body>
+</html>

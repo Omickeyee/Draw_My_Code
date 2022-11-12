@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>P, NP, NP-Hard and NP-Complete Problems</title>
+	<style>
+		html, * {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			min-height: 100vh;
+			background: lightgreen;
+		}
+
+		.grid {
+
+		}
+
+		p:nth-child(1) {
+			padding: 20px;
+			text-align: center;
+			font-family: ubuntu;
+			font-weight: bolder;
+			font-size:35px;
+			color: white;
+			font-weight: bolder;
+			text-shadow: -2px 5px 3px rgba(0, 0, 0, .2);
+			text-transform: uppercase;
+		}
+
+		.blog {
+			margin: 10px auto;
+			max-width: 800px;
+			/*background: white;*/
+			text-align: center;
+		}
+
+		.blog__heading {
+			text-align: left;
+			font-size: 28px;
+			text-transform: capitalize;
+			font-weight: bolder;
+			color: #444;
+			padding: 5px;
+		}
+		.blog .survey__image {
+			width: 700px;
+			margin: 15px auto;
+		}
+
+		.time_image {
+			max-width: 300px;
+		}
+
+		.survey_explain{
+			text-align: justify;
+			margin: 0px auto -5px auto;
+			padding: 5px;
+			font-size: 24px;
+			color: #555;
+			font-weight: normal;
+			line-height: 34px;
+		}
+
+		.each_header{
+			text-transform: capitalize;
+			font-size: 28px;
+		}
+
+		.o_notations {
+			margin: 20px auto;
+		}
+
+		.o_notations > div {
+			margin: 30px auto;
+		}
+
+		.o_notations > div > .head {
+			color: #444;
+			font-size: 30px;
+			font-weight: bolder;
+		}
+
+		.big__each__explaination {
+
+			font-size: 20px;
+		}
+		.doc {
+			font-size: 25px;
+			font-weight: normal;
+			padding: 20px 0px;
+		}
+
+		code > pre {
+			font-size: 15px;
+			background: black;
+			padding: 10px;
+			color: white;
+			border-radius: 10px;
+			box-shadow: 5px 5px 8px rgba(0, 0, 0, .9);
+		}
+
+		.list {
+			position: relative;
+			left: 30px;
+		}
+		
+		.image_ext {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			padding: 10px 0px;
+		}
+
+
+	</style>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<p> P, NP, NP-Hard and NP-Complete Problems </p>
+	<div class='grid'>
+			<div class="blog">
+				<h3 class="blog__heading">Let's understand which problem comes under which category.</h3>	
+				<div class="blog_why">
+					<img class="survey__image" alt="survey" src="../images/np_hard.jpg">
+					<div class="survey_explain">
+						<div style="margin-top:20px;padding-top:10px;font-weight: bold;">
+							P, NP, NP-Hard and NP-Complete are classes that any problem would fall under or would be classified as. So in this blog we will try to understand each of these classes one by one.
+						</div>.
+
+					</div>
+					<div class="survey_explain">
+						<div class="o_notations">
+							<div class="big_θ_notation">
+								<b class="head">1. P (Polynomial) problems</b>
+								<div class="big__each__explaination">
+									<p></p>
+
+									<p class="image_ext">
+									
+									<img src="../images/polynomial.png" alt="theta" class="time_image">
+									
+									</p>
+									<p class="doc">
+										P problems refer to problems where an algorithm would take a polynomial amount of time to solve, or where Big-O is a polynomial (i.e. O(1), O(n), O(n²), etc). These are problems that would be considered ‘easy’ to solve, and thus do not generally have immense run times.
+									</p>
+									
+	
+
+								</div>
+							</div>
+
+							<div class="big_o_notation">
+								<b class="head">2. NP (Non-deterministic Polynomial) Problems</b>
+								<div class="big__each__explaination">
+									<p></p>
+									
+									<p class="doc">
+										NP problems were a little harder for me to understand, but I think this is what they are. In terms of solving a NP problem, the run-time would not be polynomial. It would be something like O(n!) or something much larger. However, this class of problems can be given a specific solution, and checking the solution would have a polynomial run-time. An example that helped me understand this a little better was a Sudoku game.
+									</p>
+
+									<p class="image_ext">
+										<img src="../images/np.png" alt="theta" class="time_image">
+									</p>
+									<p class="doc">
+										In order to solve this entire puzzle, the algorithm would have to check each 3x3 matrix to see which numbers are missing, then each row, then each column, and then make sure there are no repetitions of any digit from 0–9. This becomes more complex because the number of digits that are missing is inconsistent in each row, column, and matrix (i.e. top-left matrix is missing 4 digits while top-right matrix is missing 8 digits). Solving this problem would not have a polynomial run-time. However, if you were to feed this puzzle with a possible solution, it would be much less complex to check if there are any repetitions in the rows, columns and matrices. This is a simple check which would have a polynomial run-time.
+									</p>
+									<p class="doc">
+										In essence, NP class problems don’t have a polynomial run-time to solve, but have a polynomial run-time to verify solutions (difficult to solve, easy to check a given answer).
+									</p>
+								</div>
+							</div>
+
+							<div class="big_om_notation">
+								<b class="head">3. NP-Hard Problems</b>
+								<div class="big__each__explaination">
+									<p></p>
+									
+
+									<p class="image_ext">
+										<img src="../images/np__hard.png" alt="theta" class="time_image">
+									</p>
+
+									<p class="doc">
+										A problem is classified as NP-Hard when an algorithm for solving it can be translated to solve any NP problem. Then we can say, this problem is at least as hard as any NP problem, but it could be much harder or more complex.
+									</p>
+
+								</div>
+							</div>
+
+							<div class="big_om_notation">
+								<b class="head">3. NP-Complete Problems</b>
+								<div class="big__each__explaination">
+									<p></p>
+									
+
+									<p class="image_ext">
+										<img src="../images/np_complete.png" alt="theta" class="time_image">
+									</p>
+
+									<p class="doc">
+										NP-Complete problems are problems that live in both the NP and NP-Hard classes. This means that NP-Complete problems can be verified in polynomial time and that any NP problem can be reduced to this problem in polynomial time.
+									</p>
+
+								</div>
+							</div>
+							<div class="blog_why" style="text-align: center;">
+								<img class="survey__image" alt="survey" src="../images/diff.png">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+
+	<script>
+
+// Main
+
+
+	</script>
+</body>
+</html>

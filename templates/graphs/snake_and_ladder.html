@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Snake And Ladder</title>
+	<style>
+		html, * {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			text-align: center;
+		}
+
+		.grid {
+			background: lightgreen;
+			margin: auto;
+			border: 1px solid black;
+		}
+
+		p:nth-child(1) {
+			padding: 10px 20px;
+			text-align: center;
+			font-family: ubuntu;
+			font-weight: bolder;
+			font-size: 25px;
+			text-transform: uppercase;
+			color: gray;
+		}
+
+		.queen {
+			padding: 10px 30px;
+		}
+
+		.mai {
+			padding: 10px 20px;
+		}
+		.first {
+			background: lightblue;
+			padding: 10px 20px;
+		}
+
+		.sec {
+			background: black;
+			padding: 10px 20px;
+			color: white;
+		}
+
+	</style>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<p>Snake And Ladder</p>
+	<canvas class='grid' width="1000" height="550">
+		
+	</canvas>
+	<div>
+		<span class='mai'>
+			<span class='mai'>
+				<span class="first">
+					Current Position
+				</span>
+				<span class="sec sec1">
+					1
+				</span>
+			</span>
+			<span class="first">
+				Dice Number: 
+			</span>
+			<span class="sec sec2">
+				
+			</span>
+		</span>
+		<button class="queen">
+			Shuffle The Dice
+		</button>
+	</div>
+	<script>
+
+// Main
+	let ctx = document.querySelector("canvas").getContext("2d");
+	let rect = {
+		width: 100,
+		height: 100
+	}
+	
+	ladders = [
+		38, 0, 0, 14, 0, 0, 0, 0, 31, 0,
+		0, 0, 0, 0, 0, 0, 7, 0, 0, 0,
+		42, 0, 0, 0, 0, 0, 0, 84, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		67, 0, 0, 34, 0, 0, 0, 0, 0, 0,
+		0, 19, 0, 60, 0, 0, 0, 0, 0, 0,
+		0, 91, 0, 0, 0, 0, 0, 0, 0, 99,
+		0, 0, 0, 0, 0, 0, 36, 0, 0, 0,
+		0, 0, 73, 0, 75, 0, 0, 79, 0, 0
+	]
+
+	time_delay = 500;
+	width = ctx.canvas.width;
+	height = ctx.canvas.height;
+	let size = 10;
+	let queenImage = new Image();
+	queenImage.src = "../../images/goti.png"
+	let arr = [];
+	let queen = 1;
+	init();		
+	currentPos = 0;
+	currentNum = "";
+
+// Utility
+	function shuffle() {
+		min = 1;
+		max = 6;
+		currentNum = Math.floor(Math.random() * (max + 1- min)) + min;
+		document.querySelector(".sec2").innerText = currentNum;
+
+		currentPos += currentNum;
+		document.querySelector(".sec1").innerText = currentPos;
+
+	}
+
+	function init() {
+		queenImage.onload = function () {
+			create_grid();
+			set_queen();		
+		};	
+		
+		for(let i=0; i<size; i++) {
+			let t = [];
+			for(let i=0; i<size; i++) {
+				t.push(0);
+			}
+			arr.push(t);
+		}
+
+		document.querySelector(".queen").addEventListener("click", () => {
+			document.querySelector(".queen").disabled = true;
+			shuffle();
+			document.querySelector(".queen").disabled = false;
+			
+		})
+	}
+
+	function create_grid() {
+		let x = width / size ;
+		let y = height / size;	
+		for(let i=0; i< size; i++) {
+			ctx.drawImage(queenImage, 1 * x + 30, y * i, 60, 50);
+			for(let j=0; j< size + 1; j++) {
+				ctx.beginPath();
+				ctx.fillStyle = (i + j) % 2 ? "white" : "yellow";
+				ctx.fillRect(j * x, y * i, x, y);
+				ctx.fillStyle = "black";
+				ctx.font = "bold 12px arial";
+				ctx.fillText(i * size + j + 1, j * x + x / 2, y * i + y / 2);
+
+				if(ladders[i][j] != 0) {
+					if(ladders[i][j] < i * size + j + 1) {
+						ctx.beginPath();
+						ctx.moveTo(start.x, start.y);
+						let x1 = Math.floor(ladders[i] / size);
+						ctx.strokeStyle = 'blue';
+						let y1 = Math.floor(ladders[i] % size);
+						ctx.lineTo(j * x, y * i, x1 * x, y1 * y);
+						ctx.stroke();
+						ctx.closePath();
+					}
+				}
+				ctx.closePath();
+			}
+		}
+
+		for(let i=0; i< size; i++) {
+			for(let j=0; j< size; j++) {
+				if(ladders[i][j] != 0) {
+					console.log(ladders[i * size + j] , i * size + j + 1)
+					if(ladders[i * size + j] < i * size + j + 1) {
+						ctx.beginPath();
+						let x1 = Math.floor(ladders[i * size + j] / size);
+						ctx.strokeStyle = 'blue';
+						let y1 = Math.floor(ladders[i * size + j] % size);
+						ctx.lineTo(j * x, y * i, x1 * x, y1 * y);
+						ctx.stroke();
+						ctx.closePath();
+					}
+				}
+			}
+		}
+	}
+
+	
+
+	function set_queen(i=0, j=0) {
+		let x = width / size
+		let y = height / size;
+		ctx.drawImage(queenImage, x * i , j * y , width / size, height / size);
+	}
+
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
+	</script>
+</body>
+</html>

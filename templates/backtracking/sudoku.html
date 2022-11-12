@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sudoku</title>
+	<style>
+		html, * {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			text-align: center;
+		}
+
+		.grid {
+			background: lightgreen;
+			margin: auto;
+			border: 2px solid black;
+		}
+
+		p:nth-child(1) {
+			padding: 10px 20px;
+			text-alig
+			n: center;
+			font-family: ubuntu;
+			font-weight: bolder;
+			font-size: 25px;
+			text-transform: uppercase;
+			color: gray;
+		}
+
+		.solve {
+			padding: 10px 30px;
+		}
+
+	</style>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<p> Sudoku </p>
+	<canvas class='grid' width="1000" height="550">
+		
+	</canvas>
+	<div>
+		<button class="solve">
+			Solve
+		</button>
+	</div>
+	<script>
+
+// Main
+	let ctx = document.querySelector("canvas").getContext("2d");
+	size = 9;
+	time_delay = 500;
+	width = ctx.canvas.width / size;
+	height = ctx.canvas.height / size;
+	let sudoku = [
+		[5, 3, 0, 0, 7, 0, 0, 0, 0],
+		[6, 0, 0, 1, 9, 5, 0, 0, 0],
+		[0, 9, 8, 0, 0, 0, 0, 6, 0],
+		[8, 0, 0, 0, 6, 0, 0, 0, 3],
+		[4, 0, 0, 8, 0, 3, 0, 0, 1],
+		[7, 0, 0, 0, 2, 0, 0, 0, 6],
+		[0, 6, 0, 0, 0, 0, 2, 8, 0],
+		[0, 0, 0, 4, 1, 9, 0, 0, 5],
+		[0, 0, 0, 0, 8, 0, 0, 7, 9],
+	];
+	let sudoku_solver = [];
+	init();
+	let done = false;
+// Utility
+
+	function init() {
+		for(let i=0; i<size; i++) {
+			let temp = [];
+			for(let j=0; j<size; j++) {
+				temp.push(sudoku[i][j]);
+			}	
+			sudoku_solver.push(temp);
+		}
+		create_grid();
+		document.querySelector(".solve").addEventListener("click", () => {
+			solve_sudoku(0);
+		})
+	}
+
+	function sudoku_checker(value, x, y) {
+		// Out Of Bond
+		if(x < 0 || y < 0 || y >=size || x >= size) return false;
+
+		// Present in Sudoku
+		if(sudoku[x][y]) return false;
+		let l = Math.floor(x / 3);
+		let r = Math.floor(y / 3);
+		
+		// Presnt in 3 X 3 Grid
+		for(let i = 3 * l; i<(3 * (l + 1)); i++) {
+			for(let j = 3 * r; j<(3 * (r + 1)); j++) {
+				if(sudoku[i][j] == value) return false;
+			}
+		}
+
+		// Present in same Row, Col;
+		for(let i=0; i<size; i++) {
+			if(sudoku[i][y] == value) return false;
+			if(sudoku[x][i] == value) return false;
+		}
+		return true;
+
+	}
+
+	async function solve_sudoku(num) {
+		if(done) return false;
+		if(num == size*size) {
+			done = true;
+			return;
+		}
+		
+		if(sudoku[Math.floor(num / 9)][num % 9] != 0) {
+			return solve_sudoku(num + 1);
+		}
+	   else {
+	    	let i = Math.floor(num / 9);
+			let j = (num % 9);
+
+			for(let e=1; e<=size; e++) {
+				if(done) return;
+				if(sudoku_checker(e, i, j)) {
+					await sleep(time_delay).then(() => {
+						ctx.beginPath();
+						ctx.fillStyle = "lightgreen";
+						ctx.fillRect(j * width, i * height, width, height);	
+						ctx.fillStyle = "black";
+						ctx.font = "bolder 20px arial"
+						ctx.fillText(e, j * width + width / 2, i * height + height / 2);
+						ctx.strokeStyle = "white";
+						ctx.strokeRect(j * width, i * height, width , height );
+						ctx.stroke();
+						ctx.closePath();
+					})
+					sudoku[i][j] = e; 
+					await solve_sudoku(num + 1);
+					sudoku[i][j] = 0;
+					if(!done) {
+						await sleep(time_delay).then(() => {
+							ctx.beginPath();
+							ctx.fillStyle = "lightgreen";
+							ctx.fillRect(j * width, i * height, width, height);	
+							ctx.strokeStyle = "white";
+							ctx.strokeRect(j * width, i * height, width , height );
+							ctx.stroke();
+							ctx.closePath();
+						});
+					}
+				}
+			}
+	    }
+	    return false;
+	}
+
+	function create_grid() {
+		let p =1;
+		for(let i=0; i< size; i++) {
+			for(let j=0; j< size; j++) {
+				if(sudoku[i][j]) {
+					ctx.fillStyle = "green";
+					ctx.fillRect(j * width, i * height, width, height);	
+					ctx.fillStyle = "white";
+					ctx.font = "bolder 20px arial"
+					ctx.fillText(sudoku[i][j], j * width + width / 2, i * height + height / 2);
+				}
+				ctx.strokeStyle = "white";
+				ctx.strokeRect(i * width, j*height, width * p, height * p);
+				ctx.stroke();
+			}
+		}
+
+	}
+
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
+	</script>
+</body>
+</html>
